@@ -147,8 +147,8 @@ function Main() {
                 <Search />
               </Suspense>
             </div>
-          </CSSTransition>          
-            {state.loggedIn && <Chat />}          
+          </CSSTransition>
+          <Chat />
           <Footer />
 
         </BrowserRouter>
