@@ -4,9 +4,10 @@ import DispatchContext from "../DispatchContext"
 import { useImmer } from "use-immer"
 import { Link } from "react-router-dom"
 import io from "socket.io-client"
+const socket = io(process.env.BACKENDURL || "https://backendformyfirstappinreact.herokuapp.com")
 
 const Chat = () => {
-  const socket = useRef(null) 
+
   const chatField = useRef(null)
   const chatLog = useRef(null)
   const appState = useContext(StateContext)
@@ -24,14 +25,13 @@ const Chat = () => {
   }, [appState.isChatOpen])
 
   useEffect(() => {
-    socket.current = io(process.env.BACKENDURL || "https://backendformyfirstappinreact.herokuapp.com")
-    socket.current.on("chatFromServer", (message) => {
+    socket.on("chatFromServer", (message) => {
       setState((draft) => {
         draft.chatMessages.push(message)
       })
     })
 
-    return () => socket.current.disconnect()
+    
   }, [])
 
   useEffect(() => {
@@ -51,8 +51,8 @@ const Chat = () => {
   function handleSubmit(e) {
     e.preventDefault()
     // Send message to chat server
-    socket.current.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
- 
+    socket.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
+
     setState((draft) => {
       // Add message to state collection of messages
       draft.chatMessages.push({ message: draft.fieldValue, username: appState.user.username, avatar: appState.user.avatar })
