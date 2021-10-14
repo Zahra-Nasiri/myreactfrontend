@@ -6,8 +6,7 @@ import { Link } from "react-router-dom"
 import io from "socket.io-client"
 const socket = io(process.env.BACKENDURL || "https://backendformyfirstappinreact.herokuapp.com")
 
-const Chat = () => {
-
+function Chat() {
   const chatField = useRef(null)
   const chatLog = useRef(null)
   const appState = useContext(StateContext)
@@ -20,7 +19,7 @@ const Chat = () => {
   useEffect(() => {
     if (appState.isChatOpen) {
       chatField.current.focus()
-      appDispatch({ type: 'clearUnreadChatCount' })
+      appDispatch({ type: "clearUnreadChatCount" })
     }
   }, [appState.isChatOpen])
 
@@ -30,14 +29,12 @@ const Chat = () => {
         draft.chatMessages.push(message)
       })
     })
-
-    
   }, [])
 
   useEffect(() => {
     chatLog.current.scrollTop = chatLog.current.scrollHeight
     if (state.chatMessages.length && !appState.isChatOpen) {
-      appDispatch({ type: 'increamentUnreadChatCount' })
+      appDispatch({ type: "incrementUnreadChatCount" })
     }
   }, [state.chatMessages])
 
@@ -72,7 +69,7 @@ const Chat = () => {
         {state.chatMessages.map((message, index) => {
           if (message.username == appState.user.username) {
             return (
-              <div className="chat-self" key={index}>
+              <div key={index} className="chat-self">
                 <div className="chat-message">
                   <div className="chat-message-inner">{message.message}</div>
                 </div>
@@ -82,7 +79,7 @@ const Chat = () => {
           }
 
           return (
-            <div className="chat-other" key={index}>
+            <div key={index} className="chat-other">
               <Link to={`/profile/${message.username}`}>
                 <img className="avatar-tiny" src={message.avatar} />
               </Link>
