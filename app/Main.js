@@ -19,7 +19,7 @@ import Home from './component/Home';
 const CreatePost = React.lazy(() => import("./component/CreatePost"))
 const ViewSinglePost = React.lazy(() => import("./component/ViewSinglePost"))
 const Search = React.lazy(() => import("./component/Search"))
-const Chat = React.lazy(() => import("./component/Chat"))
+import Chat from './component/Chat';
 import FlashMessages from './component/FlashMessages';
 import Profile from './component/Profile';
 import EditPost from './component/EditPost';
@@ -147,10 +147,8 @@ function Main() {
                 <Search />
               </Suspense>
             </div>
-          </CSSTransition>
-          <Suspense fallback="">
-            {state.loggedIn && <Chat />}
-          </Suspense>
+          </CSSTransition>          
+            {state.loggedIn && <Chat />}          
           <Footer />
 
         </BrowserRouter>
